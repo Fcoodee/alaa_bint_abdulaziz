@@ -599,7 +599,7 @@ footer{background:var(--grad)}
   paint();
 
   /* autoplay: every 5 s; holds on hover, focus, touch, hidden tab, off-screen; user can pause */
-  var DELAY=5000,playing=!reduce,hold=false,onscreen=false,touched=0;
+  var DELAY=5000,playing=true,hold=false,onscreen=false,touched=0;
   var car=document.querySelector(".car"),pp=document.getElementById("pp");
   function ppPaint(){
     pp.setAttribute("aria-pressed",playing?"false":"true");
@@ -609,7 +609,7 @@ footer{background:var(--grad)}
   pp.addEventListener("click",function(){playing=!playing;ppPaint()});
   car.addEventListener("pointerenter",function(e){if(e.pointerType==="mouse")hold=true});
   car.addEventListener("pointerleave",function(e){if(e.pointerType==="mouse")hold=false});
-  car.addEventListener("focusin",function(){hold=true});
+  car.addEventListener("focusin",function(e){try{hold=!!e.target.matches(":focus-visible")}catch(x){hold=false}});
   car.addEventListener("focusout",function(){hold=false});
   ["touchstart","pointerdown","wheel"].forEach(function(n){track.addEventListener(n,function(){touched=Date.now()},{passive:true})});
   if("IntersectionObserver" in window){
